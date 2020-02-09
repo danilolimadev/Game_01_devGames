@@ -24,8 +24,8 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	public static JFrame frame;
 	private Thread thread;
 	private boolean isRunning = true;
-	private final int WIDTH = 240;
-	private final int HEIGHT = 160;
+	public static final int WIDTH = 240;
+	public static final int HEIGHT = 160;
 	private final int SCALE = 3;
 	
 	private BufferedImage image;
@@ -42,7 +42,6 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos
-		
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
@@ -123,6 +122,7 @@ public class Game extends Canvas implements Runnable, KeyListener{
 		double delta = 0;
 		int frames = 0;
 		double timer = System.currentTimeMillis();
+		requestFocus();
 		while(isRunning) {
 			long now = System.nanoTime();
 			delta += (now - lastTime) / ns;
