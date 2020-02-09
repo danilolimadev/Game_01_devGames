@@ -16,6 +16,7 @@ import javax.swing.JFrame;
 import com.danilolimadev.entities.Entity;
 import com.danilolimadev.entities.Player;
 import com.danilolimadev.graficos.Spritesheet;
+import com.danilolimadev.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener{
 
@@ -29,24 +30,28 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	
 	private BufferedImage image;
 	
-	public List<Entity> entities;
+	public static List<Entity> entities;
 	public static Spritesheet spritesheet;
 	
-	private Player player;
+	public static World world;
+	
+	public static Player player;
 	
 	public Game() {
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos
+		
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
 		spritesheet = new Spritesheet("/spritesheet.png");
-		//spritesheet = new Spritesheet("/L.png");
-		
 		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 16, 16));
-		//player = new Player(0,0,16,16,spritesheet.getSprite(0, 0, 32, 46));
 		entities.add(player);
+		world = new World("/map.png");
+		//spritesheet = new Spritesheet("/L.png");	//Teste com outro personagem de tamanho diferente
+		
+		//player = new Player(0,0,16,16,spritesheet.getSprite(0, 0, 32, 46));
 	}
 	
 	public void initFrame() {
@@ -93,12 +98,13 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			return;
 		}
 		Graphics g = image.getGraphics();	
-		g.setColor(new Color(0,255,0));	//Fazer isso toda vez, limpa a tela e volta para a posição inicial para continuar desenhando
+		g.setColor(new Color(0,0,0));	//Fazer isso toda vez, limpa a tela e volta para a posição inicial para continuar desenhando
 		g.fillRect(0, 0, WIDTH, HEIGHT);
 		
 		
 		/*Renderização do jogo*/
 		//Graphics2D g2 = (Graphics2D) g;
+		world.render(g);
 		for(int i = 0; i < entities.size(); i++) {
 			Entity e = entities.get(i);
 			e.render(g);
