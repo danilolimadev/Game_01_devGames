@@ -3,6 +3,7 @@ package com.danilolimadev.main;
 import java.awt.Canvas;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Font;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
@@ -10,12 +11,15 @@ import java.awt.image.BufferStrategy;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import javax.swing.JFrame;
 
+import com.danilolimadev.entities.Enemy;
 import com.danilolimadev.entities.Entity;
 import com.danilolimadev.entities.Player;
 import com.danilolimadev.graficos.Spritesheet;
+import com.danilolimadev.graficos.UI;
 import com.danilolimadev.world.World;
 
 public class Game extends Canvas implements Runnable, KeyListener{
@@ -31,19 +35,27 @@ public class Game extends Canvas implements Runnable, KeyListener{
 	private BufferedImage image;
 	
 	public static List<Entity> entities;
+	public static List<Enemy> enemies;
 	public static Spritesheet spritesheet;
 	
 	public static World world;
 	
 	public static Player player;
 	
+	public static Random rand;
+	
+	public UI ui;
+	
 	public Game() {
+		rand = new Random();
 		addKeyListener(this);
 		setPreferredSize(new Dimension(WIDTH*SCALE, HEIGHT*SCALE));
 		initFrame();
 		//Inicializando objetos
+		ui = new UI();
 		image = new BufferedImage(WIDTH,HEIGHT,BufferedImage.TYPE_INT_ARGB);
 		entities = new ArrayList<Entity>();
+		enemies = new ArrayList<Enemy>();
 		spritesheet = new Spritesheet("/spritesheet.png");
 		player = new Player(0,0,16,16,spritesheet.getSprite(32, 0, 16, 16));
 		entities.add(player);
@@ -108,10 +120,14 @@ public class Game extends Canvas implements Runnable, KeyListener{
 			Entity e = entities.get(i);
 			e.render(g);
 		}
+		ui.render(g);
 		/**/
 		g.dispose();
 		g = bs.getDrawGraphics();
 		g.drawImage(image, 0, 0, WIDTH*SCALE, HEIGHT*SCALE, null);
+		g.setFont(new Font("arial", Font.BOLD, 20));
+		g.setColor(Color.WHITE);
+		g.drawString("Munição: " + player.ammo, 600,20);
 		bs.show();
 	}
 	
